@@ -11,6 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using AspNetCoreStarter.Data;
 using AspNetCoreStarter.Data.Repositories;
 using AspNetCoreStarter.Infrastructure;
+using AspNetCoreStarter.Infrastructure.Filters;
 using AspNetCoreStarter.Infrastructure.Mappings;
 using AspNetCoreStarter.Models;
 using AspNetCoreStarter.Services;
@@ -46,7 +47,10 @@ namespace AspNetCoreStarter
             services.AddAutoMapper()
                 .AddSwaggerDocumentation();
 
-            services.AddMvc();
+            services.AddMvc(options =>
+            {
+                options.Filters.Add(new ValidateModelStateFilter());
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

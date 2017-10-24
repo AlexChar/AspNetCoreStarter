@@ -44,5 +44,15 @@ namespace AspNetCoreStarter.Controllers
                 user = Mapper.Map<UserViewModel>(user)
             });
         }
+
+        [HttpPost]
+        public IActionResult Create([FromBody] UserEditViewModel model)
+        {
+            // instead
+            // if (!ModelState.IsValid) return BadRequest(ModelState);
+            // use filter instead...
+
+            return Ok(model);
+        }
     }
 }
