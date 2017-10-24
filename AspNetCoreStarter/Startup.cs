@@ -10,6 +10,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using AspNetCoreStarter.Data;
 using AspNetCoreStarter.Data.Repositories;
+using AspNetCoreStarter.Infrastructure;
 using AspNetCoreStarter.Infrastructure.Mappings;
 using AspNetCoreStarter.Models;
 using AspNetCoreStarter.Services;
@@ -42,12 +43,8 @@ namespace AspNetCoreStarter
             services.AddTransient<IEmailSender, EmailSender>();
             services.AddTransient<IUsersRepository, UsersRepository>();
 
-            services.AddAutoMapper();
-
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1.0", new Info { Title = "Main API v1.0", Version = "v1.0" });
-            });
+            services.AddAutoMapper()
+                .AddSwaggerDocumentation();
 
             services.AddMvc();
         }
@@ -61,13 +58,7 @@ namespace AspNetCoreStarter
                 app.UseBrowserLink();
                 app.UseDatabaseErrorPage();
 
-                app.UseSwagger();
-                app.UseSwaggerUI(c =>
-                {
-                    c.SwaggerEndpoint("/swagger/v1.0/swagger.json", "Versioned API v1.0");
-
-                    c.DocExpansion("none");
-                });
+                app.UseSwaggerDocumentation();
             }
             else
             {
