@@ -10,6 +10,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using AspNetCoreStarter.Data;
 using AspNetCoreStarter.Data.Repositories;
+using AspNetCoreStarter.Infrastructure.Mappings;
 using AspNetCoreStarter.Models;
 using AspNetCoreStarter.Services;
 using AspNetCoreStarter.ViewModels.Users;
@@ -40,10 +41,7 @@ namespace AspNetCoreStarter
             services.AddTransient<IEmailSender, EmailSender>();
             services.AddTransient<IUsersRepository, UsersRepository>();
 
-            Mapper.Initialize(cfg =>
-            {
-                cfg.AddProfile(new UserProfile());
-            });
+            services.AddAutoMapper();
 
             services.AddMvc();
         }
