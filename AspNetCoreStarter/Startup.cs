@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using AspNetCoreStarter.Data;
+using AspNetCoreStarter.Data.Repositories;
 using AspNetCoreStarter.Models;
 using AspNetCoreStarter.Services;
 
@@ -35,6 +36,7 @@ namespace AspNetCoreStarter
 
             // Add application services.
             services.AddTransient<IEmailSender, EmailSender>();
+            services.AddTransient<IUsersRepository, UsersRepository>();
 
             services.AddMvc();
         }
