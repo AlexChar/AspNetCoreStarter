@@ -12,6 +12,8 @@ using AspNetCoreStarter.Data;
 using AspNetCoreStarter.Data.Repositories;
 using AspNetCoreStarter.Models;
 using AspNetCoreStarter.Services;
+using AspNetCoreStarter.ViewModels.Users;
+using AutoMapper;
 
 namespace AspNetCoreStarter
 {
@@ -37,6 +39,11 @@ namespace AspNetCoreStarter
             // Add application services.
             services.AddTransient<IEmailSender, EmailSender>();
             services.AddTransient<IUsersRepository, UsersRepository>();
+
+            Mapper.Initialize(cfg =>
+            {
+                cfg.CreateMap<ApplicationUser, UserViewModel>();
+            });
 
             services.AddMvc();
         }
