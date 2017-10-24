@@ -15,6 +15,7 @@ using AspNetCoreStarter.Models;
 using AspNetCoreStarter.Services;
 using AspNetCoreStarter.ViewModels.Users;
 using AutoMapper;
+using Swashbuckle.AspNetCore.Swagger;
 
 namespace AspNetCoreStarter
 {
@@ -43,6 +44,11 @@ namespace AspNetCoreStarter
 
             services.AddAutoMapper();
 
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1.0", new Info { Title = "Main API v1.0", Version = "v1.0" });
+            });
+
             services.AddMvc();
         }
 
@@ -54,6 +60,14 @@ namespace AspNetCoreStarter
                 app.UseDeveloperExceptionPage();
                 app.UseBrowserLink();
                 app.UseDatabaseErrorPage();
+
+                app.UseSwagger();
+                app.UseSwaggerUI(c =>
+                {
+                    c.SwaggerEndpoint("/swagger/v1.0/swagger.json", "Versioned API v1.0");
+
+                    c.DocExpansion("none");
+                });
             }
             else
             {
