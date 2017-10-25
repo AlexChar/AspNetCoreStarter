@@ -16,6 +16,8 @@ using AspNetCoreStarter.Infrastructure.Mappings;
 using AspNetCoreStarter.Models;
 using AspNetCoreStarter.Services;
 using AspNetCoreStarter.ViewModels.Users;
+using Autofac;
+using Autofac.Extensions.DependencyInjection;
 using AutoMapper;
 using Swashbuckle.AspNetCore.Swagger;
 
@@ -29,9 +31,10 @@ namespace AspNetCoreStarter
         }
 
         public IConfiguration Configuration { get; }
+        public IContainer Container { get; private set; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services)
+        public IServiceProvider ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
@@ -42,7 +45,7 @@ namespace AspNetCoreStarter
 
             // Add application services.
             services.AddTransient<IEmailSender, EmailSender>();
-            services.AddTransient<IUsersRepository, UsersRepository>();
+            //services.AddTransient<IUsersRepository, UsersRepository>();
 
             services.AddAutoMapper()
                 .AddSwaggerDocumentation();
@@ -51,6 +54,14 @@ namespace AspNetCoreStarter
             {
                 options.Filters.Add(new ValidateModelStateFilter());
             });
+
+            // Add Autofac
+            var builder = new ContainerBuilder();
+            builder.Populate(services);
+            builder.RegisterType<UsersRepository>().As<IUsersRepository>();
+            this.Container = builder.Build();
+
+            return new AutofacServiceProvider(this.Container);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
