@@ -13,6 +13,7 @@ using AspNetCoreStarter.Data.Repositories;
 using AspNetCoreStarter.Infrastructure;
 using AspNetCoreStarter.Infrastructure.Filters;
 using AspNetCoreStarter.Infrastructure.Mappings;
+using AspNetCoreStarter.Infrastructure.Modules;
 using AspNetCoreStarter.Models;
 using AspNetCoreStarter.Services;
 using AspNetCoreStarter.ViewModels.Users;
@@ -58,7 +59,7 @@ namespace AspNetCoreStarter
             // Add Autofac
             var builder = new ContainerBuilder();
             builder.Populate(services);
-            builder.RegisterType<UsersRepository>().As<IUsersRepository>();
+            builder.RegisterModule<RepositoryModule>();
             this.Container = builder.Build();
 
             return new AutofacServiceProvider(this.Container);
