@@ -2,6 +2,7 @@
 using AspNetCoreStarter.Data.Repositories;
 using AspNetCoreStarter.ViewModels.Users;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AspNetCoreStarter.Controllers
@@ -45,14 +46,16 @@ namespace AspNetCoreStarter.Controllers
             });
         }
 
-        [HttpPost]
-        public IActionResult Create([FromBody] UserEditViewModel model)
+        [HttpPost, AllowAnonymous]
+        public async Task<IActionResult> Create([FromBody] UserEditViewModel model)
         {
             // instead
             // if (!ModelState.IsValid) return BadRequest(ModelState);
             // use filter instead...
 
-            return Ok(model);
+            var result = await _usersRepository.AddPolicyToUser(model.Email, "RolePermissionsChange");
+
+            return Ok(result);
         }
     }
 }

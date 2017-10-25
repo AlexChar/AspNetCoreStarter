@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using AspNetCoreStarter.Services.Calculations;
+﻿using AspNetCoreStarter.Services.Calculations;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AspNetCoreStarter.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]"), AllowAnonymous]
     public class ValuesController : Controller
     {
         private readonly ICounterService<int> _counterService;
