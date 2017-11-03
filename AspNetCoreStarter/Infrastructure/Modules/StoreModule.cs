@@ -13,8 +13,8 @@ namespace AspNetCoreStarter.Infrastructure.Modules
             builder.RegisterAssemblyTypes(assembly)
                 .Where(t => t.Name.EndsWith("Store"))
                 .AsImplementedInterfaces()
-                .InstancePerLifetimeScope();
-                //.SingleInstance();
+                //.InstancePerLifetimeScope();
+                .SingleInstance();
         }
     }
 }
