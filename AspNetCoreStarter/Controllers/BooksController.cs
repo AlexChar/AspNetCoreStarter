@@ -27,6 +27,14 @@ namespace AspNetCoreStarter.Controllers
             return Ok(Mapper.Map<BookViewModel>(book));
         }
 
+        [HttpGet]
+        public async Task<IActionResult> GetAll()
+        {
+            var books = await _booksRepository.FetchAll();
+
+            return Ok(Mapper.Map<BookViewModel[]>(books));
+        }
+
         [HttpPost]
         public async Task<IActionResult> Create([FromBody]BookCreateViewModel model)
         {
@@ -40,10 +48,7 @@ namespace AspNetCoreStarter.Controllers
                 }
             };
 
-            // TODO: Use repository pattern to save a book
-
-            //_dbContext.Books.Add(book);
-            //await _dbContext.SaveChangesAsync();
+            await _booksRepository.SaveAsync(book);
 
             return Ok(book);
         }

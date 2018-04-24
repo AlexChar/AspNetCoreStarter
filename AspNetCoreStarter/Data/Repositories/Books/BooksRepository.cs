@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using AspNetCoreStarter.Data.Models;
 using AspNetCoreStarter.Data.Stores;
 using Microsoft.EntityFrameworkCore;
@@ -27,6 +28,22 @@ namespace AspNetCoreStarter.Data.Repositories.Books
                 .FirstOrDefaultAsync(b => b.Id == id);
 
             _booksCache.Cache.Add(id, book);
+
+            return book;
+        }
+
+        public async Task<IList<Book>> FetchAll()
+        {
+            return await _dbContext.Books
+                .Include(b => b.Author)
+                .ToListAsync();
+        }
+
+        public async Task<Book> SaveAsync(Book book)
+        {
+            await _dbContext.Books.AddAsync(book);
+
+            await _dbContext.SaveChangesAsync();
 
             return book;
         }
